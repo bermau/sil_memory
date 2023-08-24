@@ -44,16 +44,14 @@ class Extracteur:
             if line.startswith("Il n'y a pas assez d'espace disque"):
                 disque = self.extraire_espace_disque(line)
                 data_tags.update(disque)
-                # if tags :
-                #     tags.update(data_tags)
-                #     print
                 self.cursor += 1
 
             elif line.startswith("'Schema Area'"):
                 data_tags.update(self.extraire_schema_area(self.lines[self.cursor: self.cursor + 3]))
                 self.cursor += 3
             else:
-                raise ValueError(f"ligne non prévue :  {line}")
+                print("ERROR : ligne non prévue :  \n{line}\n")
+                self.cursor += 1
 
         return data_tags
 
@@ -78,7 +76,7 @@ Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'
                 'area_MB_libres': cor_line2.group(1)
                 }
 
-class DataIntegrator:
+class DataIntegrateur:
     """A class to create structure like pandas Dataframe from dictionaries"""
     def __init__(self):
         self.df = pd.DataFrame()
@@ -104,11 +102,12 @@ if __name__ == '__main__':
     #
     # print("\nEtude pour l'extraction")
     # for record in list(data)[:2]:
-    #     E = Extracteur(record, data[record])
+    #     E = Extracteur(record, d
+    #     ata[record])
     #     print(E.analyse())
 
     print("\nEtude pour l'intégration")
-    I = DataIntegrator()
+    I = DataIntegrateur()
     for date in ["08/05/2022",  "16/10/2022", "08/12/2022"]:
         E = Extracteur(date, data[date])
         dico = E.analyse()
