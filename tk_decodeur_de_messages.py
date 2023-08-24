@@ -19,12 +19,8 @@ def fonction_trt(txt: str):
 
 # J'utilise une classe qui ne dérive pas d'une classe de tkinter, comme préconisé par :
 # https://stackoverflow.com/questions/16115378/tkinter-example-code-for-multiple-windows-why-wont-buttons-load-correctly
-def ouvrir_fichier():
-    """BUT  : ouvrir un fichier csv"""
-    path = filedialog.askopenfilename()
-    with open(path, "r") as f:
-        text = f.read()
-    print(text)
+
+
 
 
 class MapApp():  # Ne dérive pas de Tkinter
@@ -66,12 +62,13 @@ class MapApp():  # Ne dérive pas de Tkinter
         self.button_extract_data = tk.Button(self.frame_right, text="Extraction", command=self.extract_data)
         self.button_extract_data.pack()
 
+
         # Créer un bouton Ouvrir
-        self.button_open = tk.Button(self.frame_bottom, text="Ouvrir...", command=ouvrir_fichier)
+        self.button_open = tk.Button(self.frame_bottom, text="Ouvrir...", command=self.ouvrir_fichier)
         self.button_open.pack()
 
         # Créer un bouton quitter
-        self.button_quit = tk.Button(self.frame_bottom, text="Quitter", command=tk_master.quit)
+        self.button_quit = tk.Button(self.frame_bottom, text="Quitter", command=self.quit)
         self.button_quit.pack()
 
         # Initialisation des champs
@@ -84,7 +81,7 @@ class MapApp():  # Ne dérive pas de Tkinter
         menu_bar = tk.Menu(tk_master)
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label="Ouvrir un fichier...", command=ouvrir_fichier)
+        file_menu.add_command(label="Ouvrir un fichier...", command=self.ouvrir_fichier)
         file_menu.add_command(label="Fermer le fichier")
         file_menu.add_command(label="Quitter l'application", command=root.quit)
 
@@ -93,6 +90,21 @@ class MapApp():  # Ne dérive pas de Tkinter
         # Configurer la fenêtre principale pour utiliser la barre de menus
         self.tkmaster.config(menu=menu_bar)
         self.tkframe.pack()
+
+    def quit(self):
+        print("Je vais quitter")
+        print("Voulez vous sauver les données ? ")
+
+        self.data_manager.to_csv()
+
+        self.tkmaster.quit()
+    def ouvrir_fichier(self):
+        """BUT  : ouvrir un fichier csv"""
+        path = filedialog.askopenfilename()
+        with open(path, "r") as f:
+            text = f.read()
+        print(text)
+        self.data_manager.load_csv(path)
 
     def to_upper(self):
         txt_in = self.text_area.selection_get()
@@ -117,8 +129,6 @@ class MapApp():  # Ne dérive pas de Tkinter
         dico = extracteur.analyse()
         if dico:
             self.data_manager.add_line(date, dico)
-
-
 
 
 if __name__ == '__main__':

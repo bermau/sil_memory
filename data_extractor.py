@@ -26,6 +26,8 @@ Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'"""
 
 order = ['vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres', 'area_occup%', 'area_MB_libres']
 
+default_csv = "data.csv"
+
 class Extracteur:
 
 
@@ -35,6 +37,9 @@ class Extracteur:
         self.lines = self.txt.split("\n")
         self.nb_lines = len(self.lines)
         self.cursor = 0
+
+
+
 
     def analyse(self):
         print(f"Le nombre de ligne est de {self.nb_lines}")
@@ -80,6 +85,9 @@ class DataIntegrateur:
     """A class to create structure like pandas Dataframe from dictionaries"""
     def __init__(self):
         self.df = pd.DataFrame()
+
+
+
     def add_line(self, index, dico):
         """Ajoute une ligne au tableau à partir d'un dictionnaire décrivant la ligne"""
         line_df = pd.DataFrame.from_records(dico, index = [index]         )
@@ -90,9 +98,18 @@ class DataIntegrateur:
     def order_columns(self):
         self.df = self.df.reindex(order, axis=1)
 
-    def to_csv(self):
-        self.df.to_csv("out.csv")
+    def load_csv(self, csv_file=None):
+        """Load a csv in self.df"""
+        if csv_file is None:
+            csv_file = default_csv
+        self.df = pd.read_csv(csv_file)
+        print("CSV chargé")
 
+    def to_csv(self, file_name=None):
+        if file_name is None:
+            file_name = default_csv
+        self.df.to_csv(file_name, index=True)
+        print("CSV enregistré")
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -108,6 +125,8 @@ if __name__ == '__main__':
 
     print("\nEtude pour l'intégration")
     I = DataIntegrateur()
+    I.load_csv()
+
     for date in ["08/05/2022",  "16/10/2022", "08/12/2022"]:
         E = Extracteur(date, data[date])
         dico = E.analyse()
