@@ -24,7 +24,7 @@ Il n'y a que 3281 MB libre dans cet environnement
 Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'"""
 }
 
-order = ['vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres', 'area_occup%', 'area_MB_libres']
+order = ['date', 'vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres', 'area_occup%', 'area_MB_libres']
 
 default_csv = "data.csv"
 
@@ -37,9 +37,6 @@ class Extracteur:
         self.lines = self.txt.split("\n")
         self.nb_lines = len(self.lines)
         self.cursor = 0
-
-
-
 
     def analyse(self):
         print(f"Le nombre de ligne est de {self.nb_lines}")
@@ -86,11 +83,10 @@ class DataIntegrateur:
     def __init__(self):
         self.df = pd.DataFrame()
 
-
-
     def add_line(self, index, dico):
         """Ajoute une ligne au tableau à partir d'un dictionnaire décrivant la ligne"""
-        line_df = pd.DataFrame.from_records(dico, index = [index]         )
+        dico['date'] = index
+        line_df = pd.DataFrame.from_records(dico, index = [1]         )
         self.df = pd.concat([self.df, line_df], axis=0)
         # self.df.concat(line_df, axis = 0)
         print(self.df)
@@ -106,9 +102,10 @@ class DataIntegrateur:
         print("CSV chargé")
 
     def to_csv(self, file_name=None):
+        self.order_columns()
         if file_name is None:
             file_name = default_csv
-        self.df.to_csv(file_name, index=True)
+        self.df.to_csv(file_name, index=False)
         print("CSV enregistré")
 
 # Press the green button in the gutter to run the script.
@@ -131,7 +128,7 @@ if __name__ == '__main__':
         E = Extracteur(date, data[date])
         dico = E.analyse()
         I.add_line(date, dico)
-    I.order_columns()
+
     I.to_csv()
     print(I.df)
 
