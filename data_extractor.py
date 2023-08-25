@@ -60,7 +60,12 @@ class Extracteur:
     @staticmethod
     def extraire_espace_disque(a_line):
         """Phrase est de type :
-        Il n'y a pas assez d'espace disque sur /glimsdbf/.Il ne reste que 10413 MB, 91.85% complet"""
+        Il n'y a pas assez d'espace disque sur /glimsdbf/.Il ne reste que 10413 MB, 91.85% complet
+
+        >>> line = "Il n'y a pas assez d'espace disque sur /glimsdbf/.Il ne reste que 10413 MB, 91.85% complet"
+        >>> Extracteur.extraire_espace_disque(line)
+        {'vol_disque': '/glimsdbf/', 'vol_disp_MB': '10413', 'vol_occup%': '91.85'}
+        """
         corresp = re.search(r"(/.*?/)\.Il ne reste que (\d+) MB, (.*)%.*", a_line)
         return {'vol_disque': corresp.group(1), 'vol_disp_MB': corresp.group(2), 'vol_occup%': corresp.group(3)}
 
