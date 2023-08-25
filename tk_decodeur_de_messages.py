@@ -66,15 +66,15 @@ class MapApp:  # Ne dérive pas de Tkinter
         self.button_open = tk.Button(self.frame_bottom, text="Ouvrir...", command=self.ouvrir_fichier)
         self.button_open.pack()
 
+        # Créer un bouton Charger un exemple de message
+        self.button_load_example = tk.Button(self.frame_bottom, text="Exemple", command=self.load_example)
+        self.button_load_example.pack()
+
         # Créer un bouton quitter
         self.button_quit = tk.Button(self.frame_bottom, text="Quitter", command=self.quit)
         self.button_quit.pack()
 
-        # Initialisation des champs
-        if init_txt:
-            self.text_area.insert(tk.END, init_txt)
-        if init_date:
-            self.date_entry.insert(tk.END, str(init_date))
+
 
         # Créer une barre pour menu déroulant et y insérer des menus.
         menu_bar = tk.Menu(tk_master)
@@ -89,6 +89,13 @@ class MapApp:  # Ne dérive pas de Tkinter
         # Configurer la fenêtre principale pour utiliser la barre de menus
         self.tkmaster.config(menu=menu_bar)
         self.tkframe.pack()
+
+    def load_example(self):
+        if init_txt:
+            self.text_area.insert(tk.END, init_txt)
+        if init_date:
+            self.date_entry.insert(tk.END, str(init_date))
+
 
     def quit(self):
         print("Je vais quitter")
