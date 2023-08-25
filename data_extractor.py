@@ -24,7 +24,7 @@ Il n'y a que 3281 MB libre dans cet environnement
 Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'"""
 }
 
-order = ['date', 'vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres', 'area_occup%', 'area_MB_libres']
+order = ['date', 'vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres', 'area_occup%', 'area_MB_libres', 'rem']
 
 default_csv = "data.csv"
 
@@ -52,7 +52,7 @@ class Extracteur:
                 data_tags.update(self.extraire_schema_area(self.lines[self.cursor: self.cursor + 3]))
                 self.cursor += 3
             else:
-                print("ERROR : ligne non prévue :  \n{line}\n")
+                print(f"ERROR : ligne non prévue :  \n{line}\n")
                 self.cursor += 1
 
         return data_tags
