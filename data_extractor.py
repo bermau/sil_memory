@@ -72,11 +72,23 @@ class Extracteur:
 
     @staticmethod
     def extraire_schema_area(lines):
-        """Extraction pour une phrase de type :
-        'Schema Area' (db glims) est presque plein (419998 blocks libres,  96.4 % utilisé)
-Il n'y a que 3281 MB libre dans cet environnement
-Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'
-"""
+        """Extraction pour une phrase complexe :
+        >>> lines_examples = [
+        ... "'Schema Area' (db glims) est presque plein (419998 blocks libres,  96.4 % utilisé)",
+        ...     "Il n'y a que 3281 MB libre dans cet environnement",
+        ...  "Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'"
+        ...            ]
+        >>> expected_output = {
+        ...    "area": "db glims",
+        ...    "blk_libres": "419998",
+        ...    "area_occup%": "96.4",
+        ...    "area_MB_libres": "3281"
+        ... }
+        >>> results = Extracteur.extraire_schema_area(lines_examples)
+        >>> results == expected_output
+        True
+        """
+
         pattern = r"'Schema Area' \((.*?)\) est presque plein \((\d+) blocks libres,  ([\d.]+) % utilisé\)"
         cor_line1 = re.search(pattern, lines[0])
         cor_line2 = re.search(r"(\d+) MB libre", lines[1])
