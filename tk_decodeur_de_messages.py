@@ -21,11 +21,9 @@ def fonction_trt(txt: str):
 # https://stackoverflow.com/questions/16115378/tkinter-example-code-for-multiple-windows-why-wont-buttons-load-correctly
 
 
+class MapApp:  # Ne dérive pas de Tkinter
 
-
-class MapApp():  # Ne dérive pas de Tkinter
-
-    def __init__(self, tk_master, store_data_in:data_extractor.DataIntegrateur):
+    def __init__(self, tk_master, store_data_in: data_extractor.DataIntegrateur):
 
         self.data_manager = store_data_in
         self.files = ["fichier 1", "fichier 2"]
@@ -46,7 +44,6 @@ class MapApp():  # Ne dérive pas de Tkinter
 
         # Une entrée pour la date :
         self.date_entry = tk.Entry(self.frame_top, width=20)
-        # self.text_entry.place(height=20, width=30)
         self.date_entry.pack(side='top')
 
         # Une entrée en haut
@@ -100,6 +97,7 @@ class MapApp():  # Ne dérive pas de Tkinter
         self.data_manager.to_csv()
 
         self.tkmaster.quit()
+
     def ouvrir_fichier(self):
         """BUT  : ouvrir un fichier csv"""
         path = filedialog.askopenfilename()
