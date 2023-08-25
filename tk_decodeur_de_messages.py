@@ -50,9 +50,12 @@ class MapApp():  # Ne dérive pas de Tkinter
         self.date_entry.pack(side='top')
 
         # Une entrée en haut
-        self.text_area = tk.Text(self.frame_top, height=20, width=120)
-        # self.text_entry.place(height=20, width=30)
-        self.text_area.pack(side='left')
+        self.text_area = tk.Text(self.frame_top, height=10, width=120)
+        self.text_area.pack(side='top')
+
+        # # Une zone de texte pour déboguer
+        self.debug_text = tk.Text(self.frame_top, height=2, width=120)
+        self.debug_text.pack(side='top')
 
         # Créer un bouton d'action
         self.button_action_1 = tk.Button(self.frame_right, text="Majuscules", command=self.to_upper)
@@ -61,7 +64,6 @@ class MapApp():  # Ne dérive pas de Tkinter
         # Créer un bouton de récupération
         self.button_extract_data = tk.Button(self.frame_right, text="Extraction", command=self.extract_data)
         self.button_extract_data.pack()
-
 
         # Créer un bouton Ouvrir
         self.button_open = tk.Button(self.frame_bottom, text="Ouvrir...", command=self.ouvrir_fichier)
@@ -127,6 +129,9 @@ class MapApp():  # Ne dérive pas de Tkinter
         print(f"""Données à traiter :\n date : {date}\n msg = {msg}""")
         extracteur = data_extractor.Extracteur(date, msg)
         dico = extracteur.analyse()
+        # Afficher le dico dans le débogueur
+        self.debug_text.delete("1.0", "end")
+        self.debug_text.insert(tk.END, dico)
         if dico:
             self.data_manager.add_line(date, dico)
 
