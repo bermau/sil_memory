@@ -77,7 +77,8 @@ class Extracteur:
 Il n'y a que 3281 MB libre dans cet environnement
 Veuillez ajouter un ou plusieurs DB extents à l'environnement 'Schema Area'
 """
-        cor_line1 = re.search(r".*\((.*?)\).*(\d+).*([\d.]+)", lines[0])
+        pattern = r"'Schema Area' \((.*?)\) est presque plein \((\d+) blocks libres,  ([\d.]+) % utilisé\)"
+        cor_line1 = re.search(pattern, lines[0])
         cor_line2 = re.search(r"(\d+) MB libre", lines[1])
         return {"area": cor_line1.group(1), 'blk_libres': cor_line1.group(2), 'area_occup%': cor_line1.group(3),
                 'area_MB_libres': cor_line2.group(1)
