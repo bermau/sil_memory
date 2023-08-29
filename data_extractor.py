@@ -51,6 +51,9 @@ class Extracteur:
             elif line.startswith("'Schema Area'"):
                 data_tags.update(self.extraire_schema_area(self.lines[self.cursor: self.cursor + 3]))
                 self.cursor += 3
+            elif line.startswith("Remarque : "):
+                data_tags.update(self.extraire_remarque(line))
+                self.cursor += 1
             else:
                 print(f"ERROR : ligne non prévue :  \n{line}\n")
                 self.cursor += 1
@@ -96,6 +99,17 @@ class Extracteur:
                 'area_MB_libres': cor_line2.group(1)
                 }
 
+    @staticmethod
+    def extraire_remarque(line):
+        """
+        Pour insérer une remarque saisie 'Remarque : la_remarque'
+        >>> line = "Remarque : Intervention effectuée"
+        >>> Extracteur.extraire_remarque(line)
+        {'rem': 'Intervention effectuée'}
+        """
+        pattern = r"Remarque : (.*)"
+        result = re.search(pattern, line)
+        return {"rem": result.group(1)}
 
 
 class DataIntegrateur:
