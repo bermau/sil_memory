@@ -28,8 +28,8 @@ order = ['date', 'vol_disque', 'vol_disp_MB', 'vol_occup%', "area", 'blk_libres'
 
 default_csv = "data.csv"
 
-class Extracteur:
 
+class Extracteur:
 
     def __init__(self, date_str, txt):
         self.date = date_str
@@ -71,7 +71,6 @@ class Extracteur:
         """
         corresp = re.search(r"(/.*?/)\.Il ne reste que (\d+) MB, (.*)%.*", a_line)
         return {'vol_disque': corresp.group(1), 'vol_disp_MB': corresp.group(2), 'vol_occup%': corresp.group(3)}
-
 
     @staticmethod
     def extraire_schema_area(lines):
@@ -120,9 +119,8 @@ class DataIntegrateur:
     def add_line(self, index, dico):
         """Ajoute une ligne au tableau à partir d'un dictionnaire décrivant la ligne"""
         dico['date'] = index
-        line_df = pd.DataFrame.from_records(dico, index = [1]         )
+        line_df = pd.DataFrame.from_records(dico, index=[1])
         self.df = pd.concat([self.df, line_df], axis=0)
-        # self.df.concat(line_df, axis = 0)
         print(self.df)
 
     def order_columns(self):
@@ -142,18 +140,12 @@ class DataIntegrateur:
         self.df.to_csv(file_name, index=False)
         print("CSV enregistré")
 
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     record = "08/12/2022"
     E = Extracteur(record, data[record])
     print(E.analyse())
-    #
-    # print("\nEtude pour l'extraction")
-    # for record in list(data)[:2]:
-    #     E = Extracteur(record, d
-    #     ata[record])
-    #     print(E.analyse())
-
     print("\nEtude pour l'intégration")
     I = DataIntegrateur()
     I.load_csv()
@@ -165,4 +157,3 @@ if __name__ == '__main__':
 
     I.to_csv()
     print(I.df)
-
